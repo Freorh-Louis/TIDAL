@@ -1,0 +1,73 @@
+{#
+    ======================================================================
+
+    DESCRIPTION :
+    Ce template génère dynamiquement la liste des patho disponibles
+    Il s appuie sur base.html.twig et affiche le contenu conditionnellement en fonction 
+    des données fournies et de état de connexion des utilisateurs
+
+    FONCTIONNALITÉS PRINCIPALES :
+    - Si utilisateur connecté un champ de filtre par mot-clé est affiché dans un formulaire GET
+    - Affichage dynamique de chaque pathologie depuis la variable pathologies :
+        - Chaque pathologie est cliquable et redirige vers sa page de détail
+        - Informations affichées : Catégorie, Type (caractéristique), Description
+
+    - Utilisation des blocs pour organiser le template
+    - Encapsulation des styles inline (à externaliser à terme dans CSS)
+    - Séparation logique : interface filtrage visible uniquement si connecté
+    - Utilisation de la fonction default pour éviter les erreurs si motcle est nul
+    - Design responsive avec flex-wrap pour l'affichage des pathologies
+
+    ======================================================================
+#}
+
+{% extends "base.html.twig" %}
+
+{% block title %}Pathologies{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/home.css">
+{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px 10px 300px;">
+        <div style="flex: 1;">
+            <h1 style="margin: 0; text-align: center;">Liste des Pathologies</h1>
+        </div>
+
+        {% if is_logged %}
+            <form method="GET" action="/pathologies" style="flex-shrink: 0;">
+                <input type="text" name="motcle" placeholder="Mot-clé..." 
+                    value="{{ motcle|default('') }}"
+                    style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+                <button type="submit" style="padding: 8px 12px; border: none; background-color: #3da189; color: white; border-radius: 4px;">
+                    Filtrer
+                </button>
+            </form>
+        {% else %}
+            <div style="width: 220px;"></div>
+        {% endif %}
+    </div>
+
+
+
+
+    {% if pathologies is not empty %}
+        <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+            {% for p in pathologies %}
+                <a href="/detailPathologie?id={{ p.idp }}" style="text-decoration: none; color: inherit;">
+                    <div style="border:1px solid #ccc; padding:10px; margin:10px; width:300px;">
+                        <strong>Catégorie :</strong> {{ p.categorie }}<br>
+                        <strong>Caractéristique :</strong> {{ p.type }}<br>
+                        <strong>Nom de la Pathologies :</strong> {{ p.description }}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune pathologie trouvée.</p>
+    {% endif %}
+
+    
+{% endblock %}

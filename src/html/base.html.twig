@@ -1,0 +1,89 @@
+{#
+    ======================================================================
+    
+    DESCRIPTION :
+    Ce fichier représente le squelette principal de notre site "Acupuncture Heaven".
+    Il utilise un moteur de template Twig pour intégrer dynamiquement
+    le contenu spécifique de chaque page grâce à des blocs extensibles ({% block %}).
+    
+    FONCTIONNALITÉS PRINCIPALES :
+    - Affichage du logo avec lien vers la page d'accueil, du titre du site et slogan
+    - Barre de navigation responsive avec :
+        - des liens dynamiques vers l'accueil et la page des pathologies
+        - recherche pour trouver une pathologie
+        - lien vers la page de connexion login
+    - Bloc de contenu principal extensible pour insérer le contenu propre à chaque page
+
+    - Système de template = pour éviter la redondance
+    - Contenu structuré de manière modulaire et réutilisable
+    - Responsive design grâce à Flexbox et au meta viewport
+
+    ======================================================================
+#}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/main.css">
+        <title>{% block title %}{% endblock %} - Acupuncture Heaven</title>
+        <link rel="icon" type="image/png" href="/images/favicon.png">
+    {% endblock %}
+</head>
+
+<body>
+    <div style="padding: 10px; position: absolute; top: 10px; left: 10px; ">
+        <a href="/">
+            <img src="/images/favicon.png" alt="Logo" style="height: 80px;">
+        </a>
+    </div>
+
+    <div id="header">
+        <h1>Acupuncture Heaven</h1>
+        <p>Harmonie et équilibre à chaque aiguille.</p>
+
+        <nav class="navbar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; background-color: #333; padding: 10px 20px;">
+            <div class="nav-left" style="display: flex; align-items: center; gap: 20px;">
+                <a href="/" 
+                   class="nav-link {% if title == 'Home' %}active{% endif %}" 
+                   style="color:white; text-decoration:none; padding: 8px 16px; background-color: #2da39b; border-radius: 6px; transition: background 0.3s;">
+                   Home
+                </a>
+                
+                <a href="/pathologies" 
+                   class="nav-link {% if title == 'Pathologies' %}active{% endif %}" 
+                   style="color:white; text-decoration:none; padding: 8px 16px; background-color: #2da39b; border-radius: 6px; transition: background 0.3s;">
+                   Pathologies
+                </a>
+
+                <form method="get" action="/pathologies">
+                    <input 
+                        type="search" 
+                        name="maladie" 
+                        placeholder="Rechercher une pathologie..." 
+                        value="{{ recherche ?? '' }}"
+                        style="padding: 6px 10px; border-radius: 4px; border: none; margin-left: 10px;"
+                    >
+                </form>
+            </div>
+
+            
+            <div class="nav-right">
+                {% if is_logged %}
+                     <a href="/login" class="nav-link" style="color:white; text-decoration:none;">Log out</a>
+                 {% else %}
+                     <a href="/login" class="nav-link" style="color:white; text-decoration:none;">Login</a>
+                 {% endif %}
+            </div>
+
+        </nav>
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

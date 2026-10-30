@@ -1,0 +1,19 @@
+.loginForm {
+    text-align: center;
+}
+
+.signUp {
+    color: #50946f;
+}
+
+.currentlyLogin {
+    color: gray;
+}
+
+.loginFailed {
+    color: red;
+}
+
+.loginSuccessful {
+    color: green;
+}

@@ -1,0 +1,43 @@
+{#
+    ======================================================================
+
+    DESCRIPTION : (sans api PAS UTILISE)
+    Ce fichier est un template Twig qui hérite du layout principal base.html.twig
+    Il est utilisé pour afficher les détails d'une patho spécifique
+
+    FONCTIONNALITÉS PRINCIPALES :
+    - Affichage du contenu de la pathologie (catégorie, méridien, type, description, symptômes)
+    - Lien de retour vers la liste des pathologies
+    - Gestion du cas où la pathologie n'existe pas ou n'est pas trouvée
+
+    ======================================================================
+#}
+
+
+{% extends "base.html.twig" %}
+
+{% block title %}Détail Pathologie{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/home.css">
+{% endblock %}
+
+{% block content %}
+    <h1>Détails de la Pathologie</h1>
+
+    {% if patho is not empty %}
+        <div style="max-width: 600px; margin: auto; border: 1px solid #ccc; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #fdfdfd;">
+            <p><strong>Catégorie :</strong> {{ patho.categorie }}</p>
+            <p><strong>Méridien :</strong> {{ patho.nom_meridien }}</p>
+            <p><strong>Type :</strong> {{ patho.interpretation_type }}</p>
+            <p><strong>Description :</strong> {{ patho.description }}</p>
+            <p><strong>Symtpomes :</strong> {{ patho.description_des_symptomes}}</p>
+        </div>
+        <p style="text-align:center; margin-top: 20px;">
+            <a href="/pathologies" style="color: #3da189; text-decoration: none;">← Retour à la liste des pathologies</a>
+        </p>
+    {% else %}
+        <p>Aucune information disponible pour cette pathologie.</p>
+    {% endif %}
+{% endblock %}

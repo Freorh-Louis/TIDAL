@@ -1,0 +1,62 @@
+{#
+  ======================================================================
+ 
+  DESCRIPTION :
+  Ce template représente la page de connexion pour les utilisateurs
+  Il hérite du layout principal base.html.twig et contient un formulaire HTML
+  sécurisé pour saisir les identifiants utilisateur
+
+  FONCTIONNALITÉS PRINCIPALES :
+  - Formulaire de type POST envoyant les identifiants à /authorize
+  - Champs requis : nom d'utilisateur et mot de passe
+  - Intégration de balises personnalisées spécifiques à un moteur de formulaire
+  - Affichage conditionnel du message selon état de connexion 
+      - 1 → erreur d'identifiants
+      - 0 → succès
+      - sinon → connexion en cours
+
+  - Champs requis pour renforcer la validation côté client
+  - Séparation claire entre logique et présentation via Twig
+  - Affichage clair et accessible des erreurs ou du succès de authentification
+
+  ======================================================================
+#}
+
+{% extends "base.html.twig" %}
+
+{% block title %}Home{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel = "stylesheet" href = "../css/home.css">
+    <link rel = "stylesheet" href = "../css/login.css">
+{% endblock %}
+
+{% block content %}
+    <form class='loginForm' method="POST" enctype="application/x-www-form-urlencoded" action="/authorize">
+        <h1>Connexion</h1>
+        <p>Nom d'utilisateur </p>
+        <p style="text-indent: 0em;"><input type="text" name="username" required="required" /> </p>
+        <p>Mot de passe </p>
+        <p style="text-indent: 0em;"><input type="password" name="password" required="required" /> </p>
+        <EI-INJECT-HIDDEN-INPUT-FIELDS/>
+        <p style="text-indent: 2em;"> <button id="login_button" type="submit" name="Connexion" value="true">Log in</button> </p>
+  
+        <EI-LOGINFIRSTTIME>
+          <p>En cas d'oublie, contacter l'administration.</p>
+        </EI-LOGINFIRSTTIME>
+
+        {% if loginFailed == 1 %}
+          <EI-LOGINFAILED>
+            <p class='loginFailed'>Erreur dans l'identifiant ou le mot de passe.
+              En cas d'oublie, contacter l'administration.</p>
+          </EI-LOGINFAILED>
+        {% elseif loginFailed == 0 %}
+          <p class='loginSuccessful'>Authentification réussi</p>
+        {% else %}
+          <p class='currentlyLogin'>Authentification en cours</p>
+        {% endif %}
+  
+        <EI-INTERNAL-CUSTOM-FORM-ERROR/>
+
+        <a class='signUp' href='/signUp'>Vous n'avez pas de compte ? Inscrivez-vous !</a>
+{% endblock %}

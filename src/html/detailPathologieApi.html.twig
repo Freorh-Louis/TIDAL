@@ -1,0 +1,46 @@
+{#
+    ======================================================================
+
+    DESCRIPTION : (avec api)
+    Ce template Twig hérite du layout principal base.html.twig et sert à afficher
+    les détails une patho spécifique de manière dynamique avec API REST.
+
+    FONCTIONNALITÉS PRINCIPALES :
+    - Appel une API REST via JavaScript fetch pour récupérer les détails de la pathologie
+      selon id fourni par le back-end
+    - Injection dynamique des données dans le DOM grâce aux identifiants des balises <p>
+    - affiche un lien de retour vers la liste des pathologies
+
+    - Utilisation de parent pour réutiliser le contenu de base
+    - Séparation du contenu et des données (les données sont injectées côté client)
+    - Utilisation de fetch pour des appels asynchrones modernes à l API
+    - Gestion des erreurs API avec catch
+    - Utilisation ID HTML clairs pour faciliter la manipulation DOM
+
+    ======================================================================
+#}
+
+{% extends "base.html.twig" %}
+
+{% block title %}Détail Pathologie{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/home.css">
+    <script src='../js/detailPathologieAPI.js' defer></script>
+{% endblock %}
+
+{% block content %}
+    <h1>Détails de la Pathologie</h1>
+
+    <div id="pathologieContainer" data-id="{{ id }}" style="max-width: 600px; margin: auto; border: 1px solid #ccc; border-radius: 10px; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #fdfdfd;">
+        <p id='categorie'><strong>Catégorie : </strong></p>
+        <p id='meridien'><strong>Méridien : </strong></p>
+        <p id='type'><strong>Type : </strong></p>
+        <p id='description'><strong>Description : </strong></p>
+        <p id='symptomes'><strong>Symtpomes : </strong></p>
+    </div>
+    <p style="text-align:center; margin-top: 20px;">
+        <a href="/pathologies" style="color: #3da189; text-decoration: none;">← Retour à la liste des pathologies</a>
+    </p>
+{% endblock %}

@@ -1,0 +1,56 @@
+{#
+    ======================================================================
+
+    DESCRIPTION :
+    Ce template représente la home page du site 
+    Il hérite du layout principal `base.html.twig` et affiche dynamiquement 
+    une grille de contenus visuels à partir de données passées au template.
+
+    FONCTIONNALITÉS PRINCIPALES :
+    - Affichage d'une grille d'éléments items contenant chacun :
+        - Une image liée vers une pathologie
+        - Un texte descriptif
+    - Un script JavaScript permet d'agrandir une image en cliquant dessus 
+
+    - Utilisation du moteur de template Twig avec les blocs pour structurer le contenu
+    - Boucle pour générer dynamiquement les éléments du site
+
+    ======================================================================
+#}
+
+{% extends "base.html.twig" %}
+
+{% block title %}Home{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel = "stylesheet" href = "../css/home.css">
+{% endblock %}
+
+
+{% block content %}
+    <div class="grid-container">
+        {% for item in items %}
+            <div class="grid-item">
+                <div class="fixed-height">
+                    <a href={{ item.patho }}>
+                        <img src="{{ images_path }}{{ item.image }}" alt="{{ item.alt }}" onclick="myFunction(this);">
+                    </a>
+                </div>
+                <p>{{ item.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+    function myFunction(imgs) {
+        // Fonction pour agrandir les images si nécessaire
+        var expandImg = document.getElementById("expandedImg");
+        var imgText = document.getElementById("imgtext");
+        expandImg.src = imgs.src;
+        imgText.innerHTML = imgs.alt;
+        expandImg.parentElement.style.display = "block";
+    }
+    </script>
+    
+{% endblock %}
+

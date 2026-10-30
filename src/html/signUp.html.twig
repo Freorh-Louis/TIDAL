@@ -1,0 +1,41 @@
+{# Template twig de la page d'inscription d'un nouvel utilisateur #}
+
+{% extends "base.html.twig" %}
+
+{% block title %}Home{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <link rel = "stylesheet" href = "../css/home.css">
+{% endblock %}
+
+{% block content %}
+    <form method="POST" enctype="application/x-www-form-urlencoded" action="/createNewUser">
+        <h1>Connexion</h1>
+        <p>Email </p>
+        <p style="text-indent: 0em;"><input type="text" name="email" required="required" /> </p>
+        <p>Nom d'utilisateur </p>
+        <p style="text-indent: 0em;"><input type="text" name="username" required="required" /> </p>
+        <p>Mot de passe </p>
+        <p style="text-indent: 0em;"><input type="password" name="password" required="required" /> </p>
+        <p>Valider votre mot de passe </p>
+        <p style="text-indent: 0em;"><input type="password" name="passwordValidation" required="required" /> </p>
+        <EI-INJECT-HIDDEN-INPUT-FIELDS/>
+        <p style="text-indent: 2em;"> <button id="login_button" type="submit" name="Connexion" value="true">Sign up</button> </p>
+  
+        <EI-LOGINFIRSTTIME>
+          <p>En cas d'oublie, contacter l'administration.</p>
+        </EI-LOGINFIRSTTIME>
+
+        {% if loginFailed == 1 %}
+          <EI-LOGINFAILED>
+            <p style="color: red">Erreur dans l'identifiant ou le mot de passe.
+              En cas d'oublie, contacter l'administration.</p>
+          </EI-LOGINFAILED>
+        {% elseif loginFailed == 0 %}
+          <p style="color: green">Authentification réussi</p>
+        {% else %}
+          <p style="color: gray">Authentification en cours</p>
+        {% endif %}
+  
+        <EI-INTERNAL-CUSTOM-FORM-ERROR/>
+{% endblock %}
